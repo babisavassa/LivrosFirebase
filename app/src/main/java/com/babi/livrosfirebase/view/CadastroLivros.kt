@@ -35,7 +35,7 @@ fun CadastroLivro(navController: NavController) {
                 Text(text = "Menu do App Livros", modifier = Modifier.padding(16.dp))
                 Divider()
                 NavigationDrawerItem(
-                    label = { Text(text = "Lista de Livros") },
+                    label = { Text(text = "Lista de Livros:") },
                     selected = false,
                     onClick = { navController.navigate("ListaLivros") }
                 )
