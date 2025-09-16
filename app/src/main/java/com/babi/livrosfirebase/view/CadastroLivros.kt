@@ -80,7 +80,7 @@ fun CadastroLivro(navController: NavController) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Color.LightGray)
+                    .background(Color.White)
                     .padding(innerPadding),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
@@ -90,7 +90,7 @@ fun CadastroLivro(navController: NavController) {
                     onValueChange = { titulo = it },
                     label = { Text("Título do Livro") },
                     colors = TextFieldDefaults.outlinedTextFieldColors(
-                        focusedTextColor = Purple40,
+                        focusedTextColor = Color.Black,
                         unfocusedBorderColor = Color.Black,
                         focusedLabelColor = Purple40,
                         cursorColor = Purple40
@@ -102,7 +102,7 @@ fun CadastroLivro(navController: NavController) {
                     onValueChange = { autor = it },
                     label = { Text("Autor") },
                     colors = TextFieldDefaults.outlinedTextFieldColors(
-                        focusedLabelColor = Purple40,
+                        focusedLabelColor = Color.Black,
                         unfocusedBorderColor = Color.Black,
                         unfocusedLabelColor = Purple40,
                         cursorColor = Purple40

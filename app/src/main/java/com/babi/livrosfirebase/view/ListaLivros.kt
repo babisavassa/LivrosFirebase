@@ -14,7 +14,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Color.Companion.Blue
+import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.graphics.Color.Companion.LightGray
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.text.font.FontWeight
@@ -61,10 +61,12 @@ fun ListaLivro(navController: NavController) {
             modifier = Modifier.fillMaxSize(),
             topBar = {
                 TopAppBar(
-                    title = { Text(
-                        if (livroSelecionado == null) "Lista de Livros"
-                            else "Sobre o Livro") },
-
+                    title = {
+                        Text(
+                            if (livroSelecionado == null) "Lista de Livros"
+                            else "Detalhes do Livro"
+                        )
+                    },
                     colors = TopAppBarDefaults.topAppBarColors(
                         containerColor = Purple40,
                         titleContentColor = Color.White
@@ -88,90 +90,90 @@ fun ListaLivro(navController: NavController) {
                     }
                 )
             },
-            bottomBar = {BottomAppBar {}},
+            bottomBar = { BottomAppBar {} },
             floatingActionButton = {
-                FloatingActionButton(onClick = { navController.navigate("CadastroLivros") })
-                {
+                FloatingActionButton(onClick = { navController.navigate("CadastroLivros") }) {
                     Icon(Icons.Default.Add, contentDescription = "Adicionar")
                 }
             }
         ) { innerPadding ->
-            if (livroSelecionado == null){
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(Color.LightGray)
-                    .padding(innerPadding)
-            ) {
-                LazyColumn(modifier = Modifier.fillMaxSize()) {
-                    items(listaLivros) { livro ->
-                        val t = livro["titulo"] as? String ?: "Sem título"
-                        val a = livro["autor"] as? String ?: "Sem autor"
-                        val g = livro["genero"] as? String ?: "Sem gênero"
+            if (livroSelecionado == null) {
+                // LISTA DE LIVROS
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(White)
+                        .padding(innerPadding)
+                ) {
+                    LazyColumn(modifier = Modifier.fillMaxSize()) {
+                        items(listaLivros) { livro ->
+                            val t = livro["titulo"] as? String ?: ""
+                            val a = livro["autor"] as? String ?: ""
+                            val g = livro["genero"] as? String ?: ""
 
-                        Card(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 16.dp, vertical = 8.dp)
-                                .clickable { livroSelecionado = livro },
-                            elevation = CardDefaults.cardElevation(4.dp),
-                            colors = CardDefaults.cardColors(containerColor = White)
-                        )
-
-                        {
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier.padding(16.dp)
+                            Card(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 16.dp, vertical = 8.dp)
+                                    .clickable { livroSelecionado = livro },
+                                elevation = CardDefaults.cardElevation(4.dp),
+                                colors = CardDefaults.cardColors(containerColor = White)
                             ) {
-                                Column(modifier = Modifier.weight(1f)) {
-                                    Text("📌 $t", fontWeight = FontWeight.Bold, color = Purple40)
-                                    Text("Autor: $a", color = LightGray)
-                                    Text("Gênero: $g", color = LightGray)
-                                }
-                                Icon(
-                                    Icons.Default.Delete,
-                                    contentDescription = "Excluir livro",
-                                    tint = androidx.compose.ui.graphics.Color.Red,
-                                    modifier = Modifier
-                                        .size(24.dp)
-                                        .clickable {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    modifier = Modifier.padding(16.dp)
+                                ) {
+                                    Column(modifier = Modifier.weight(1f)) {
+                                        Text("📌 $t", fontWeight = FontWeight.Bold, color = Purple40)
+                                        Text("Autor: $a", color = Black)
+                                        Text("Gênero: $g", color = Black)
+                                    }
+
+                                    // Botão de excluir
+                                    IconButton(
+                                        onClick = {
                                             dataSource.deletarLivro(t)
                                             dataSource.listarLivros(
                                                 onResult = { listaLivros = it },
                                                 onFailure = { e -> mensagem = "Erro: ${e.message}" }
                                             )
                                         }
-                                )
+                                    ) {
+                                        Icon(
+                                            Icons.Default.Delete,
+                                            contentDescription = "Excluir livro",
+                                            tint = Color.Red
+                                        )
+                                    }
+                                }
                             }
                         }
                     }
+                    Text(text = mensagem, modifier = Modifier.padding(8.dp))
                 }
-                Text(text = mensagem, modifier = Modifier.padding(8.dp))
-            }
-            }
-            else {
-                // detalhes livro especifico
+            } else {
+                // DETALHES DO LIVRO
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(LightGray)
+                        .background(White)
                         .padding(innerPadding)
                         .padding(16.dp),
                     verticalArrangement = Arrangement.Top
-                )
-
-
-
-                {
-                    Text("Título: ${livroSelecionado!!["titulo"]}", fontWeight = FontWeight.Bold, color = Purple40)
-                    Text("Autor: ${livroSelecionado!!["autor"]}", color = LightGray)
-                    Text("Gênero: ${livroSelecionado!!["genero"]}", color = LightGray)
+                ) {
+                    Text(
+                        "Título: ${livroSelecionado!!["titulo"]}",
+                        fontWeight = FontWeight.Bold,
+                        color = Black
+                    )
+                    Text("Autor: ${livroSelecionado!!["autor"]}", color = Black)
+                    Text("Gênero: ${livroSelecionado!!["genero"]}", color = Black)
 
                     Spacer(modifier = Modifier.height(20.dp))
 
                     Button(
                         onClick = { livroSelecionado = null },
-                        colors = ButtonDefaults.buttonColors(containerColor = Blue),
+                        colors = ButtonDefaults.buttonColors(containerColor = Purple40),
                         shape = MaterialTheme.shapes.medium
                     ) {
                         Text("Voltar para lista", color = White)
@@ -181,6 +183,3 @@ fun ListaLivro(navController: NavController) {
         }
     }
 }
-
-
-
